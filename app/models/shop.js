@@ -1,16 +1,6 @@
-import Ember from 'ember';
+import DS from 'ember-data';
 
-export default Ember.Object.extend({
-  name: '',
-
-  slug: Ember.computed('name', function() {
-    return this.get('name').dasherize();
-  }),
-
-  setupProducts: Ember.on('init',
-    function() {
-      if (!this.get('products')) {
-        this.set('products', []);
-    }
-  }),
+export default DS.Model.extend({
+  name: DS.attr('string'),
+  products: DS.hasMany('product'),
 });

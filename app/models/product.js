@@ -1,8 +1,8 @@
-import Ember from 'ember';
+import DS from 'ember-data';
 
-export default Ember.Object.extend({
-  name: '',
-  quantity: 0,
-  price: 0,
-  shop: null
+export default DS.Model.extend({
+  name: DS.attr('string'),
+  quantity: DS.attr('number'),
+  price: DS.attr('number'),
+  shop: DS.belongsTo('shop'),
 });

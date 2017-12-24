@@ -4,7 +4,7 @@ import { capitalize as capitalizeWords } from '../../../helpers/capitalize';
 
 export default Ember.Route.extend({
   model() {
-    return this.modelFor('shops.shop');
+    return this.modelFor('shops.shop')
     },
   actions: {
     didTransition: function() {
@@ -27,7 +27,9 @@ export default Ember.Route.extend({
     createProduct() {
       let controller = this.get('controller');
       let shop = this.modelFor('shops.shop');
-      let name = controller.get('name');
+
+
+      /*let name = controller.get('name');
       let quantity = controller.get('quantity');
       let price = controller.get('price');
       let product = Product.create({
@@ -39,7 +41,20 @@ export default Ember.Route.extend({
       shop.get('products').pushObject(product);
       controller.set('name', '');
       controller.set('quantity', '');
-      controller.set('price', '');
+      controller.set('price', '');*/
+
+      var product = this.store.createRecord('product',{
+        name: controller.get('name'),
+        price: controller.get('price'),
+        quantity: controller.get('quantity'),
+        shop: shop
+      });
+
+      shop.save().then(function () {
+        controller.set('name', '');
+        controller.set('quantity', '');
+        controller.set('price', '');
+      })
     },
     deleteProduct(data) {
       let cancel = window.confirm("Are you sure you want to delete?");
