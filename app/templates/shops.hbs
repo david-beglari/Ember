@@ -1,0 +1,52 @@
+<div class="col-md-6">
+  <ul class="shop-list-group">
+    {{#if model}}
+      {{#each model as |shop|}}
+        <li class="shop-list-group-item">
+          {{#if isEdit}}
+            <form {{action 'update' shop on='submit'}}>
+              <div class="form-group">
+                {{input type="text" class="form-control edit-shop" value=shop.name}}
+                <button class="btn btn-primary btn-save">save</button>
+              </div>
+            </form>
+          {{else}}
+            {{#link-to 'shops.shop.products' shop}}{{capitalize shop.name}}{{/link-to}}
+          {{/if}}
+          <div class="shop-list-buttons">
+            {{#unless isEdit}}
+              <button class="btn btn-success" {{action "shopEdit"}}>Edit</button>
+              <form {{action 'deleteShop' shop on='submit'}}>
+                <button class="btn btn-danger">Delete</button>
+              </form>
+            {{/unless}}
+          </div>
+        </li>
+      {{/each}}
+    {{else}}
+      <li class="shop-list-group-item">
+        <div class="empty-message">
+          There are no shops yet.
+        </div>
+      </li>
+    {{/if}}
+  </ul>
+  <div class="shop-list-buttons">
+  {{#if isShow}}
+    <form {{action "create" on="submit"}}>
+      <div class="form-group">
+        <label>Name: </label>
+        {{input type="text" class="form-control new-shop" placeholder="New shop"
+                value=name}}
+      </div>
+    <button class="btn btn-add"
+            disabled={{isAddButtonDisabled}} >Save</button>
+    </form>
+  {{else}}
+    <button class="btn btn-add" {{action "showInput"}}>Add shop</button>
+  {{/if}}
+  </div>
+</div>
+<div class="col-md-6">
+  {{outlet}}
+</div>

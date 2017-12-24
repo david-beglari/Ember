@@ -1,0 +1,90 @@
+{{#if model.products}}
+<table class="table">
+  <thead>
+  {{#unless isEdit}}
+    <tr>
+      <th class="text-center">NAME</th>
+      <th class="text-center">QTY</th>
+      <th class="text-center">PRICE</th>
+    </tr>
+  {{/unless}}
+  </thead>
+  <tbody>
+  {{#each model.products as |product|}}
+    <tr>
+    {{#if isEdit}}
+        <form {{action 'updateProduct' product on='submit'}}>
+          <div class="form-group">
+            <label>Name: </label>
+            {{input type="text" class="form-control edit-product" value=product.name}}
+          </div>
+          <div class="form-group">
+            <label>Quantity:</label>
+            {{input type="text" class="form-control edit-product" value=product.quantity}}
+          </div>
+          <div class="form-group">
+            <label>Price: </label>
+            {{input type="text" class="form-control edit-product" value=product.price}}
+          </div>
+          <button class="btn btn-primary">save</button>
+        </form>
+    {{else}}
+      <td>{{capitalize product.name}}</td>
+      <td class="text-center">{{product.quantity}}</td>
+      <td class="text-center">$ {{product.price}}</td>
+    {{/if}}
+    {{#unless isEdit}}
+      <th><button class="btn btn-success" {{action "productEdit"}}><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></th>
+      <form {{action 'deleteProduct' product on='submit'}}>
+        <th><button class="btn btn-danger btn-delete-product"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></th>
+      </form>
+    {{/unless}}
+    </tr>
+  {{/each}}
+  </tbody>
+  {{#unless isEdit}}
+  <tfoot>
+  <tr>
+    <th></th>
+    <th></th>
+    <th class="text-right price-name"><p>Total price</p>
+      <span class="price">$ {{total}}</span>
+    </th>
+  </tr>
+  </tfoot>
+  {{/unless}}
+</table>
+{{else}}
+<table class="table">
+  <thead class="product-list-group-item">
+    <tr class="empty-message">
+      There are no products yet.
+    </tr>
+  </thead>
+</table>
+{{/if}}
+<div class="product-list-button">
+  {{#if isShow}}
+    <form {{action "createProduct" on="submit"}}>
+      <div class="form-group">
+        <label>Name: </label>
+        {{input type="text" class="form-control new-product" placeholder="Product name"
+                value=name}}
+      </div>
+      <div class="form-group">
+        <label>Quantity: </label>
+        {{input type="number" class="form-control new-product" placeholder="Product quantity"
+                value=quantity}}
+      </div>
+      <div class="form-group">
+        <label>Price: </label>
+        {{input type="number" class="form-control new-product" placeholder="Product price"
+                value=price}}
+      </div>
+      <button class="btn btn-add"
+              disabled={{isAddButtonDisabled}} >Save</button>
+    </form>
+  {{else}}
+    <button class="btn btn-add" {{action "showInput"}}>Add product</button>
+  {{/if}}
+</div>
