@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   model () {
-      return this.store.findAll('shop');
+    return this.store.findAll('shop');
   },
 
   actions: {
@@ -22,22 +22,29 @@ export default Route.extend({
     }
     },
     create() {
-      //let name = this.get('controller').get('name');
-      //let shop = Shop.create({name: name});
-      //this.modelFor('shops').pushObject(shop);
-      //this.get('controller').set('name', '');
-      //this.transitionTo('shops.shop.products', shop);
+      let name = this.controller.get('name');
+
+      const model =  this.store.createRecord('shop',{
+        id: '_id',
+        name: name
+      });
+
+      model.save()
+        .then(() => {
+          this.transitionTo('shops');
+        });
     },
     deleteShop(data) {
-      //console.log(data.name);
       let cancel = window.confirm("Are you sure you want to delete?");
       if(cancel) {
-        this.modelFor('shops').popObject(data.name);
+        data.destroyRecord()
+          .then(() => this.transitionTo('shops'));
       }
       this.transitionTo('shops');
     },
     update(data) {
-      //console.log(data.name);
+      data.save()
+        .then(() => this.transitionTo('shops'));
     }
   }
 });
