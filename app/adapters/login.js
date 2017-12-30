@@ -2,6 +2,6 @@ import Typicode from './typicode'
 
 export default Typicode.extend({
   pathForType() {
-    return 'registrations'
+    return 'login'
   }
 });

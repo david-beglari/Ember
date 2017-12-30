@@ -43,12 +43,26 @@ export default Ember.Route.extend({
     deleteProduct(data) {
       let cancel = window.confirm("Are you sure you want to delete?");
       if(cancel) {
-        let shop = this.modelFor('shops.shop');
-        shop.get('products').popObject(data.name);
+        data.destroyRecord()
+          .then(() => this.transitionTo('shops'));
       }
     },
     updateProduct(data) {
-      console.log(data.name);
+      let controller = this.get('controller');
+      let shop = this.modelFor('shops.shop');
+
+      let product = this.store.createRecord('product',{
+        name: data.name,
+        price: data.price,
+        quantity: data.quantity,
+        shop: shop
+      });
+
+      product.save().then(function () {
+        controller.set('name', '');
+        controller.set('quantity', '');
+        controller.set('price', '');
+      })
     }
   }
 });
